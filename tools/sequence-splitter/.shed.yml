@@ -1,0 +1,9 @@
+categories: [Text Manipulation]
+description: |
+  sequence-splitter - Split fasta/fastq sequences on chunk size or number of chunks
+name: sequence_splitter
+owner: pasteur
+long_description: |
+  sequence-splitter - Split fasta/fastq sequences on chunk size or number of chunks
+remote_repository_url: https://github.com/rplanel/galaxy-tools/tree/master/tools/sequence-splitter
+type: unrestricted
