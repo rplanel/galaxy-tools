@@ -31,9 +31,9 @@
     <inputs>
         <param type="data" name="sequences" format="fasta,fastq"/>
         <conditional name="split_mode">
-            <param name="selector" type="select" label="Split by chunk size or number of chunk">
+            <param name="selector" type="select" label="Split by chunk size or number of chunk(s)">
                 <option value="chunk_size">Chunk size</option>
-                <option value="nb_chunk">Number of chunks</option>
+                <option value="nb_chunk">Number of chunk(s)</option>
             </param>
             <when value="chunk_size">
                 <param name="chunk_size" label="Chunk size" type="integer" min="1" value="100" help="How many sequences by chunk ?"/>
