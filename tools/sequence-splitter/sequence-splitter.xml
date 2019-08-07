@@ -1,0 +1,111 @@
+<tool id="sequence-splitter" name="Sequence Splitter" version="0.1.0">
+    <requirements>
+        <requirement type="package" version="2.7.11">Python</requirement>
+        <requirement type="package" version="1.73">biopython</requirement>
+    </requirements>
+    <edam_operations>
+        <edam_operation>operation_2409</edam_operation>
+        <edam_operation>operation_3359</edam_operation>
+    </edam_operations>
+    <edam_topics>
+        <edam_topic>topic_3307</edam_topic>
+        <edam_topic>topic_0080</edam_topic>
+    </edam_topics>
+    <command detect_errors="exit_code"><![CDATA[
+        ln -s '$sequences' ./sequences.${sequences.ext} &&
+        python 
+            '$__tool_directory__/sequence-splitter.py' 
+            -s ./sequences.$sequences.ext
+            #if $sequences.is_of_type("fasta") 
+                -f fasta
+            #else
+                -f fastq
+            #end if 
+            #if $split_mode.selector == 'chunk_size'
+                -cs $split_mode.chunk_size
+            #else
+                -nc $split_mode.nb_chunk
+            #end if
+            -o 'outputs'
+    ]]>    </command>
+    <inputs>
+        <param type="data" name="sequences" format="fasta,fastq"/>
+        <conditional name="split_mode">
+            <param name="selector" type="select" label="Split by chunk size or number of chunk">
+                <option value="chunk_size">Chunk size</option>
+                <option value="nb_chunk">Number of chunks</option>
+            </param>
+            <when value="chunk_size">
+                <param name="chunk_size" label="Chunk size" type="integer" min="1" value="100" help="How many sequences by chunk ?"/>
+            </when>
+            <when value="nb_chunk">
+                <param name="nb_chunk" label="Number of chunks" type="integer" min="1" value="10" help="How many chunks ?"/>
+            </when>
+        </conditional>
+    </inputs>
+    <outputs>
+        <collection name="split_output" type="list" label="splitted sequences">
+            <discover_datasets pattern="(?P&lt;designation&gt;\w+-chunk-\d+)\.(?P&lt;ext&gt;.+)" directory="outputs" />
+        </collection>
+        <data format="text" name="logfile" from_work_dir="sequence-splitter.log" label="${tool.name} logfile on ${on_string}"/>
+    </outputs>
+    <tests>
+        <test>
+            <param name="sequences" value="sample.fasta"/>
+            <conditional name="split_mode">
+                <param name="selector" value="chunk_size"/>
+                <param name="chunk_size" value="2"/>
+            </conditional>
+            <output_collection name="split_output" type="list" count="2">
+                <element name="sequences-chunk-1" file="sample-chunk-1.fasta" ftype="fasta"/>
+                <element name="sequences-chunk-2" file="sample-chunk-2.fasta" ftype="fasta"/>
+            </output_collection>
+        </test>
+        <test>
+            <param name="sequences" value="sample.fastq"/>
+            <conditional name="split_mode">
+                <param name="selector" value="chunk_size"/>
+                <param name="chunk_size" value="2"/>
+            </conditional>
+            <output_collection name="split_output" type="list" count="5">
+                <element name="sequences-chunk-1" file="sample-chunk-1.fastq" ftype="fastqsanger"/>
+                <element name="sequences-chunk-2" file="sample-chunk-2.fastq" ftype="fastqsanger"/>
+                <element name="sequences-chunk-3" file="sample-chunk-3.fastq" ftype="fastqsanger"/>
+                <element name="sequences-chunk-4" file="sample-chunk-4.fastq" ftype="fastqsanger"/>
+                <element name="sequences-chunk-5" file="sample-chunk-5.fastq" ftype="fastqsanger"/>
+            </output_collection>
+        </test>
+
+        <test>
+            <param name="sequences" value="sample.fastq"/>
+            <conditional name="split_mode">
+                <param name="selector" value="nb_chunk" />
+                <param name="nb_chunk" value="2"/>
+            </conditional>
+            <output_collection name="split_output" type="list" count="2">
+                <element name="sequences-chunk-1" file="sample-3-chunk-1.fastq" ftype="fastqsanger"/>
+                <element name="sequences-chunk-2" file="sample-3-chunk-2.fastq" ftype="fastqsanger"/>
+            </output_collection>
+        </test>
+        <test>
+            <param name="sequences" value="sample.fasta"/>
+            <conditional name="split_mode">
+                <param name="selector" value="nb_chunk" />
+                <param name="nb_chunk" value="10"/>
+            </conditional>
+            <output_collection name="split_output" type="list" count="4">
+                <element name="sequences-chunk-1" file="sample-2-chunk-1.fasta" ftype="fasta"/>
+                <element name="sequences-chunk-2" file="sample-2-chunk-2.fasta" ftype="fasta"/>
+                <element name="sequences-chunk-3" file="sample-2-chunk-3.fasta" ftype="fasta"/>
+                <element name="sequences-chunk-4" file="sample-2-chunk-4.fasta" ftype="fasta"/>
+            </output_collection>
+        </test>
+
+    </tests>
+    <help><![CDATA[
+
+Usage: split_sequences.py [-h] [-s SEQUENCES] [-f FORMAT] (-cs CHUNK_SIZE | -nc NB_CHUNK) [-o OUTPUT]
+
+
+    ]]>    </help>
+</tool>
