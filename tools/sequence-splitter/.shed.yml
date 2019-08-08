@@ -1,10 +1,17 @@
-categories: [Text Manipulation]
+categories:
+  - Fasta Manipulation
+  - Fastq Manipulation
 description: |
-  sequence-splitter - Split fasta/fastq sequences on chunk size or number of chunks
+  sequence-splitter - Split fasta/fastq sequences
 name: sequence_splitter
-owner: remi
+owner: rplanel
 long_description: |
-  sequence-splitter - Split fasta/fastq sequences on chunk size or number of chunks
+  sequence-splitter - Split fasta/fastq sequences.
+  It can be split depending on two criteria:
+    - The number of sequence(s) per chunk
+    - The number of chunk(s)
+  If you ask for a number of chunks greater than sequences available in the input, you will have a number of chunks that correspond to the number of sequences (1 sequence per chunk).
+  
 remote_repository_url: https://github.com/rplanel/galaxy-tools/tree/master/tools/sequence-splitter
 type: unrestricted
 homepage_url: https://github.com/rplanel/galaxy-tools/tree/master/tools/sequence-splitter

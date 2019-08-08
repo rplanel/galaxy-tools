@@ -36,7 +36,16 @@ def main():
 
 
 def gen_get_chunks(sequences_path, sequences_format, nb_chunk):
+    """[summary]
 
+    Arguments:
+        sequences_path {[type]} -- [description]
+        sequences_format {[type]} -- [description]
+        nb_chunk {[type]} -- [description]
+
+    Returns:
+        [type] -- [description]
+    """
     # First record to count the sequences
     sequences_record_to_count = gen_sequence_record(
         sequences_path, sequences_format)
