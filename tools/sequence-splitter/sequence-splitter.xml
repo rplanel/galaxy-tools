@@ -1,6 +1,6 @@
 <tool id="sequence-splitter" name="Sequence Splitter" version="0.1.0">
     <requirements>
-        <requirement type="package" version="2.7.11">Python</requirement>
+        <requirement type="package" version="3.7.2">python</requirement>
         <requirement type="package" version="1.73">biopython</requirement>
     </requirements>
     <edam_operations>
@@ -22,17 +22,17 @@
                 -f fastq
             #end if 
             #if $split_mode.selector == 'chunk_size'
-                -cs $split_mode.chunk_size
+                -c $split_mode.chunk_size
             #else
-                -nc $split_mode.nb_chunk
+                -n $split_mode.nb_chunk
             #end if
             -o 'outputs'
     ]]>    </command>
     <inputs>
         <param type="data" name="sequences" format="fasta,fastq"/>
         <conditional name="split_mode">
-            <param name="selector" type="select" label="Split by chunk size or number of chunk(s)">
-                <option value="chunk_size">Chunk size</option>
+            <param name="selector" type="select" label="Split by:">
+                <option value="chunk_size">Number of sequence(s) by chunk</option>
                 <option value="nb_chunk">Number of chunk(s)</option>
             </param>
             <when value="chunk_size">
@@ -103,8 +103,29 @@
 
     </tests>
     <help><![CDATA[
+Usage:
 
-Usage: split_sequences.py [-h] [-s SEQUENCES] [-f FORMAT] (-cs CHUNK_SIZE | -nc NB_CHUNK) [-o OUTPUT]
+    sequence-splitter.py [-h] [-s SEQUENCES] [-f FORMAT] (-c CHUNK_SIZE | -n NB_CHUNK) [-o OUTPUT]
+
+Split fasta/fastq files
+
+optional arguments:
+-h, --help            show this help message and exit
+
+-s SEQUENCES, --sequences SEQUENCES
+                    File that contains the sequences
+
+-f FORMAT, --format FORMAT
+                    File format (fastq, fasta)
+
+-c CHUNK_SIZE, --chunk-size CHUNK_SIZE
+                    The number of sequences by chunks
+
+-n NB_CHUNK, --nb-chunk NB_CHUNK
+                    Number of chunks
+
+-o OUTPUT, --output OUTPUT
+                    The output directory where the chunks will be saved
 
 
     ]]>    </help>
