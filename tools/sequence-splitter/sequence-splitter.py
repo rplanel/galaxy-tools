@@ -5,8 +5,6 @@ import argparse
 import logging
 import os
 from itertools import chain, islice, tee
-
-
 # BioPython
 from Bio import SeqIO
 
@@ -25,11 +23,11 @@ def main():
     chunk_size = args.chunk_size
     # split the sequences in chunks
     if chunk_size:
-        logger.info("%s = %s", "chunk size asked", chunk_size)
+        logger.info("%s = %s", "chunk size parameter", chunk_size)
         sequences_record = gen_sequence_record(args.sequences, args.format)
         chunks = gen_get_chunks_by_size(sequences_record, chunk_size)
     else:
-        logger.info("%s = %s", "number of chunks asked", args.nb_chunk)
+        logger.info("%s = %s", "number of chunks parameter", args.nb_chunk)
         chunks = gen_get_chunks(args.sequences, args.format, args.nb_chunk)
 
     # Write the chunks in numbered files.
@@ -43,7 +41,7 @@ def gen_get_chunks(sequences_path, sequences_format, nb_chunk):
         sequences_path, sequences_format)
     # Get the number of sequences
     nb_sequences = get_nb_sequences(sequences_record_to_count)
-    logger.info("%s = %i", "Number of sequences", nb_sequences)
+    logger.info("%s = %i", "Number of sequences per chunk", nb_sequences)
     # Second record to that will be splitted
     sequences_to_split = gen_sequence_record(sequences_path, sequences_format)
 
@@ -53,7 +51,7 @@ def gen_get_chunks(sequences_path, sequences_format, nb_chunk):
 
 
 def gen_get_chunks_by_size(iterable, size=10):
-    logger.info("%s = %i", "chunk size got", size)
+    logger.info("%s = %i", "chunk size got (could be different from parameter if more chunk asked than sequences in multifasta)", size)
     iterator = iter(iterable)
     for first in iterator:
         yield chain([first], islice(iterator, size - 1))
