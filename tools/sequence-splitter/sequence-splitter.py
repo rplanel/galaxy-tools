@@ -5,6 +5,7 @@ import argparse
 import logging
 import os
 from itertools import chain, islice, tee
+
 # BioPython
 from Bio import SeqIO
 
