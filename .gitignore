@@ -45,3 +45,8 @@ docs/_build/
 
 tool_test_output.html
 tool_test_output.json
+
+
+# vscode
+.vscode
+*.code-workspace
