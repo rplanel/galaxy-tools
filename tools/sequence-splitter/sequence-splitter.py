@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-import locale
-import sys
 import os
 import argparse
-from itertools import chain, islice, tee, count
 import logging
+from itertools import chain, islice, tee
+
 
 # BioPython
 from Bio import SeqIO
@@ -26,11 +25,11 @@ def main():
     chunk_size = args.chunk_size
     # split the sequences in chunks
     if chunk_size:
-        logger.info('%s = %s', "chunk size asked", chunk_size)
+        logger.info("%s = %s", "chunk size asked", chunk_size)
         sequences_record = gen_sequence_record(args.sequences, args.format)
         chunks = gen_get_chunks_by_size(sequences_record, chunk_size)
     else:
-        logger.info('%s = %s', "number of chunks asked", args.nb_chunk)
+        logger.info("%s = %s", "number of chunks asked", args.nb_chunk)
         chunks = gen_get_chunks(args.sequences, args.format, args.nb_chunk)
 
     # Write the chunks in numbered files.
@@ -40,10 +39,11 @@ def main():
 def gen_get_chunks(sequences_path, sequences_format, nb_chunk):
 
     # First record to count the sequences
-    sequences_record_to_count = gen_sequence_record(sequences_path, sequences_format)
+    sequences_record_to_count = gen_sequence_record(
+        sequences_path, sequences_format)
     # Get the number of sequences
     nb_sequences = get_nb_sequences(sequences_record_to_count)
-    logger.info('%s = %i', "Number of sequences", nb_sequences)
+    logger.info("%s = %i", "Number of sequences", nb_sequences)
     # Second record to that will be splitted
     sequences_to_split = gen_sequence_record(sequences_path, sequences_format)
 
@@ -53,7 +53,7 @@ def gen_get_chunks(sequences_path, sequences_format, nb_chunk):
 
 
 def gen_get_chunks_by_size(iterable, size=10):
-    logger.info('%s = %i', "chunk size got", size)
+    logger.info("%s = %i", "chunk size got", size)
     iterator = iter(iterable)
     for first in iterator:
         yield chain([first], islice(iterator, size - 1))
@@ -77,7 +77,8 @@ def write_chunks(iterable, dirname, filename, file_extension, sequence_format):
         with open(output_file, mode="w") as output_handle:
             count_seq, seq_to_write = tee(chunk, 2)
             logger.info(
-                "%s : number of seuquences = %i", output_file, len(list(count_seq))
+                "%s : number of seuquences = %i", output_file, len(
+                    list(count_seq))
             )
             SeqIO.write(seq_to_write, output_handle, sequence_format)
 
@@ -88,14 +89,23 @@ def parse_arguments():
         "-s", "--sequences", type=str, help="File that contains the sequences"
     )
 
-    parser.add_argument("-f", "--format", type=str, help="File format (fastq, fasta)")
+    parser.add_argument("-f", "--format", type=str,
+                        help="File format (fastq, fasta)")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument(
-        "-c", "--chunk-size", type=int, help="The number of sequences by chunks."
+        "-c", "--chunk-size",
+        type=int,
+        help="The number of sequences by chunks."
     )
     group.add_argument("-n", "--nb-chunk", help="Number of chunks", type=int)
 
-    parser.add_argument("-o", "--output", type=str, default="./", help="The output directory where the chunks will be saved")
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        default="./",
+        help="The output directory where the chunks will be saved",
+    )
 
     return parser.parse_args()
 
