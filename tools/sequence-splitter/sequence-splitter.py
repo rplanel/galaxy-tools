@@ -2,8 +2,8 @@
 # coding: utf-8
 
 import argparse
-import os
 import logging
+import os
 from itertools import chain, islice, tee
 
 
