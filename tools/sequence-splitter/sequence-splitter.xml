@@ -1,6 +1,6 @@
 <tool id="sequence-splitter" name="Sequence Splitter" version="0.1.0">
     <requirements>
-        <requirement type="package" version="3.7.2">python</requirement>
+        <requirement type="package" version="2.7.11">python</requirement>
         <requirement type="package" version="1.73">biopython</requirement>
     </requirements>
     <edam_operations>
