@@ -51,7 +51,12 @@ def gen_get_chunks(sequences_path, sequences_format, nb_chunk):
 
 
 def gen_get_chunks_by_size(iterable, size=10):
-    logger.info("%s = %i", "chunk size got (could be different from parameter if more chunk asked than sequences in multifasta)", size)
+    logger.info(
+        "%s = %i",
+        "chunk size got (could be different from parameter if more chunk asked \
+         than sequences in multifasta)",
+        size
+    )
     iterator = iter(iterable)
     for first in iterator:
         yield chain([first], islice(iterator, size - 1))
