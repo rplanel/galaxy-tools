@@ -42,6 +42,6 @@ lint:
         --output changed_repositories.list
     - cat changed_repositories.list
     - set -e
-    - cd "$CI_PROJECT_DIR" && flake8 --exclude=.git,./deprecated/ .
+    - flake8 --exclude=.git,./deprecated/ .
     - while read -r DIR; do planemo shed_lint --tools --ensure_metadata --urls --report_level warn --fail_level error --recursive "$DIR"; done < changed_repositories.list
 
