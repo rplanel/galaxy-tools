@@ -30,12 +30,13 @@ before_script:
   - export GALAXY_RELEASE=release_19.05
   - export PLANEMO_CONDA_PREFIX="$HOME/conda"
   - unset JAVA_HOME
+  - pip install planemo
 
 
 lint:
   stage: lint
   script:
-    - pip install flake8 flake8-import-order planemo
+    - pip install flake8 flake8-import-order
     - planemo --version
     - |
       planemo ci_find_repos --exclude_from .tt_skip \
@@ -45,3 +46,11 @@ lint:
     - while read -r DIR; do flake8 --exclude=.git,./deprecated/ $DIR; done < changed_repositories.list
     - while read -r DIR; do planemo shed_lint --tools --ensure_metadata --urls --report_level warn --fail_level error --recursive "$DIR"; done < changed_repositories.list
 
+test:
+  stage: test
+  script:
+    - set -e
+    - |
+      while read -r DIR; do
+        planemo test --conda_dependency_resolution --conda_auto_install --conda_channels iuc,conda-forge,bioconda,defaults --galaxy_branch "$GALAXY_RELEASE" --galaxy_source "$GALAXY_REPO" $DIR
+      done < changed_repositories.list
