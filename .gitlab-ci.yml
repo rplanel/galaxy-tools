@@ -49,11 +49,7 @@ lint:
 test:
   stage: test
   script:
-    - |
-      planemo ci_find_repos --exclude_from .tt_skip \
-        --output changed_repositories.list
+    - planemo ci_find_repos --exclude_from .tt_skip --output changed_repositories.list
+    - cat changed_repositories.list
     - set -e
-    - |
-      while read -r DIR; do \
-        planemo test --conda_dependency_resolution --conda_auto_install --conda_channels iuc,conda-forge,bioconda,defaults --galaxy_branch "$GALAXY_RELEASE" --galaxy_source "$GALAXY_REPO" $DIR \
-      done < changed_repositories.list
+    - while read -r DIR; do planemo test --conda_dependency_resolution --conda_auto_install --conda_channels iuc,conda-forge,bioconda,defaults --galaxy_branch "$GALAXY_RELEASE" --galaxy_source "$GALAXY_REPO" $DIR; done < changed_repositories.list
