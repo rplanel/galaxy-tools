@@ -1,4 +1,4 @@
-<tool id="sequence-splitter" name="Sequence Splitter" version="0.1.0">
+<tool id="sequence-splitter" name="Sequence Splitter" version="0.1.1">
     <requirements>
         <requirement type="package" version="2.7.11">python</requirement>
         <requirement type="package" version="1.73">biopython</requirement>
@@ -50,17 +50,7 @@
         <data format="text" name="logfile" from_work_dir="sequence-splitter.log" label="${tool.name} logfile on ${on_string}"/>
     </outputs>
     <tests>
-        <test>
-            <param name="sequences" value="sample.fasta"/>
-            <conditional name="split_mode">
-                <param name="selector" value="chunk_size"/>
-                <param name="chunk_size" value="2"/>
-            </conditional>
-            <output_collection name="split_output" type="list" count="2">
-                <element name="sequences-chunk-1" file="sample-chunk-1.fasta" ftype="fasta"/>
-                <element name="sequences-chunk-2" file="sample-chunk-2.fasta" ftype="fasta"/>
-            </output_collection>
-        </test>
+        <!-- CHUNK SIZE -->
         <test>
             <param name="sequences" value="sample.fastq"/>
             <conditional name="split_mode">
@@ -68,14 +58,24 @@
                 <param name="chunk_size" value="2"/>
             </conditional>
             <output_collection name="split_output" type="list" count="5">
-                <element name="sequences-chunk-1" file="sample-chunk-1.fastq" ftype="fastqsanger"/>
-                <element name="sequences-chunk-2" file="sample-chunk-2.fastq" ftype="fastqsanger"/>
-                <element name="sequences-chunk-3" file="sample-chunk-3.fastq" ftype="fastqsanger"/>
-                <element name="sequences-chunk-4" file="sample-chunk-4.fastq" ftype="fastqsanger"/>
-                <element name="sequences-chunk-5" file="sample-chunk-5.fastq" ftype="fastqsanger"/>
+                <element name="sequences-chunk-1" file="sample-chunk-1.fastq" ftype="fastqsanger" compare="diff"/>
+                <element name="sequences-chunk-2" file="sample-chunk-2.fastq" ftype="fastqsanger" compare="diff"/>
+                <element name="sequences-chunk-3" file="sample-chunk-3.fastq" ftype="fastqsanger" compare="diff"/>
+                <element name="sequences-chunk-4" file="sample-chunk-4.fastq" ftype="fastqsanger" compare="diff"/>
+                <element name="sequences-chunk-5" file="sample-chunk-5.fastq" ftype="fastqsanger" compare="diff"/>
             </output_collection>
         </test>
-
+        <test>
+            <param name="sequences" value="sample.fasta"/>
+            <conditional name="split_mode">
+                <param name="selector" value="chunk_size" />
+                <param name="chunk_size" value="5"/>
+            </conditional>
+            <output_collection name="split_output" type="list" count="1">
+                <element name="sequences-chunk-1" file="sample-5-chunk-1.fasta" ftype="fasta" compare="diff"/>
+            </output_collection>
+        </test>
+        <!-- NUMBER CHUNK -->
         <test>
             <param name="sequences" value="sample.fastq"/>
             <conditional name="split_mode">
@@ -83,8 +83,21 @@
                 <param name="nb_chunk" value="2"/>
             </conditional>
             <output_collection name="split_output" type="list" count="2">
-                <element name="sequences-chunk-1" file="sample-3-chunk-1.fastq" ftype="fastqsanger"/>
-                <element name="sequences-chunk-2" file="sample-3-chunk-2.fastq" ftype="fastqsanger"/>
+                <element name="sequences-chunk-1" file="sample-3-chunk-1.fastq" ftype="fastqsanger" compare="diff"/>
+                <element name="sequences-chunk-2" file="sample-3-chunk-2.fastq" ftype="fastqsanger" compare="diff"/>
+            </output_collection>
+        </test>
+        <test>
+            <param name="sequences" value="sample.fastq"/>
+            <conditional name="split_mode">
+                <param name="selector" value="nb_chunk" />
+                <param name="nb_chunk" value="4"/>
+            </conditional>
+            <output_collection name="split_output" type="list" count="4">
+                <element name="sequences-chunk-1" file="sample-4-chunk-1.fastq" ftype="fastqsanger" compare="diff"/>
+                <element name="sequences-chunk-2" file="sample-4-chunk-2.fastq" ftype="fastqsanger" compare="diff"/>
+                <element name="sequences-chunk-3" file="sample-4-chunk-3.fastq" ftype="fastqsanger" compare="diff"/>
+                <element name="sequences-chunk-4" file="sample-4-chunk-4.fastq" ftype="fastqsanger" compare="diff"/>
             </output_collection>
         </test>
         <test>
@@ -94,10 +107,10 @@
                 <param name="nb_chunk" value="10"/>
             </conditional>
             <output_collection name="split_output" type="list" count="4">
-                <element name="sequences-chunk-1" file="sample-2-chunk-1.fasta" ftype="fasta"/>
-                <element name="sequences-chunk-2" file="sample-2-chunk-2.fasta" ftype="fasta"/>
-                <element name="sequences-chunk-3" file="sample-2-chunk-3.fasta" ftype="fasta"/>
-                <element name="sequences-chunk-4" file="sample-2-chunk-4.fasta" ftype="fasta"/>
+                <element name="sequences-chunk-1" file="sample-2-chunk-1.fasta" ftype="fasta" compare="diff"/>
+                <element name="sequences-chunk-2" file="sample-2-chunk-2.fasta" ftype="fasta" compare="diff"/>
+                <element name="sequences-chunk-3" file="sample-2-chunk-3.fasta" ftype="fasta" compare="diff"/>
+                <element name="sequences-chunk-4" file="sample-2-chunk-4.fasta" ftype="fasta" compare="diff"/>
             </output_collection>
         </test>
 
