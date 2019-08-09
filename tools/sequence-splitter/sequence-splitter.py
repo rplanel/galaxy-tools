@@ -103,6 +103,14 @@ def gen_sequence_record(sequences_path, sequence_format):
 
 
 def get_nb_sequences(sequences):
+    """[summary]
+        Compute the number of sequences
+    Arguments:
+        sequences {[type]} -- Iterable of sequences
+
+    Returns:
+        [type] -- Number of sequences
+    """
     return sum(1 for _ in sequences)
 
 
@@ -126,6 +134,17 @@ def write_chunks(iterable, dirname, filename, file_extension, sequence_format):
 
 
 def positive_integer(str_value):
+    """[summary]
+    Define a type for argparse in order to enforce integer greater than 0
+    Arguments:
+        str_value {[type]} -- Value got by argparse
+
+    Raises:
+        argparse.ArgumentTypeError: When the value is not an integer > 0
+
+    Returns:
+        [type] -- [description]
+    """
     value = int(str_value)
     if isinstance(value, int) and value > 0:
         return value
