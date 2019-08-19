@@ -39,13 +39,14 @@ lint:
     - pip install flake8 flake8-import-order
     - planemo --version
     - echo ${CI_COMMIT_BEFORE_SHA}
-    - git diff --quiet "$CI_COMMIT_BEFORE_SHA" -- ; GIT_DIFF_EXIT_CODE=$?
-    - |
-      if [ "$GIT_DIFF_EXIT_CODE" -gt 1 ] ; then
-          git remote set-branches --add origin master
-          git fetch
-          CI_COMMIT_BEFORE_SHA=origin/master...
-      fi
+    - git diff --quiet ${CI_COMMIT_BEFORE_SHA} -- ; GIT_DIFF_EXIT_CODE=$?
+    # - |
+    #   if [ "$GIT_DIFF_EXIT_CODE" -gt 1 ] ; then
+    #       git remote set-branches --add origin master
+    #       git fetch
+    #       CI_COMMIT_BEFORE_SHA=origin/master...
+    #   fi
+    - echo ${GIT_DIFF_EXIT_CODE}
     - echo ${CI_COMMIT_BEFORE_SHA}
     - |
       planemo ci_find_repos --exclude_from .tt_skip \
