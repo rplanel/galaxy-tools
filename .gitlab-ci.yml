@@ -68,4 +68,8 @@ test:
 deploy:
   stage: deploy
   script:
+    - |
+      planemo ci_find_repos --exclude_from .tt_skip \
+                            --changed_in_commit_range ${CI_COMMIT_BEFORE_SHA} \
+                            --output changed_repositories.list
     - cat changed_repositories.list
