@@ -38,6 +38,7 @@ lint:
   script:
     - pip install flake8 flake8-import-order
     - planemo --version
+    - echo ${CI_COMMIT_BEFORE_SHA}
     - |
       planemo ci_find_repos --exclude_from .tt_skip \
         --output changed_repositories.list
@@ -53,3 +54,8 @@ test:
     - cat changed_repositories.list
     - set -e
     - while read -r DIR; do planemo test --conda_dependency_resolution --conda_auto_install --conda_channels iuc,conda-forge,bioconda,defaults --galaxy_branch "$GALAXY_RELEASE" --galaxy_source "$GALAXY_REPO" $DIR; done < changed_repositories.list
+
+deploy:
+  stage: deploy
+  script:
+    - cat changed_repositories.list
