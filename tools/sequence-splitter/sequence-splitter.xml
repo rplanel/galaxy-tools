@@ -1,4 +1,7 @@
 <tool id="sequence-splitter" name="Sequence Splitter" version="0.1.1">
+    <macros>
+        <import>macros.xml</import>
+    </macros>
     <requirements>
         <requirement type="package" version="2.7.11">python</requirement>
         <requirement type="package" version="1.73">biopython</requirement>
@@ -142,4 +145,5 @@ optional arguments:
 
 
     ]]>    </help>
+    <expand macro="citations" />
 </tool>

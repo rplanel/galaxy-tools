@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<macros>
+    <xml name="citations">
+        <citations>
+            <citation type="bibtex">
+                @UNPUBLISHED{None,
+                author = {Rémi Planel},
+                title = {None},
+            }</citation>
+        </citations>
+    </xml>
+</macros>
