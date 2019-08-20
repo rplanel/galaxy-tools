@@ -82,5 +82,13 @@ deploy:
                             --changed_in_commit_range ${CI_COMMIT_BEFORE_SHA} \
                             --output changed_repositories.list
     - cat changed_repositories.list
+    - |
+      while read -r DIR; \
+      do \
+        planemo shed_update --shed_target https://toolshed.pasteur.fr/ \
+                            --shed_email "$SHED_EMAIL" \
+                            --shed_password "$SHED_PASSWORD" \
+                            --force_repository_creation "$DIR" || exit 1; \
+      done < changed_repositories.list
   only:
     - master
